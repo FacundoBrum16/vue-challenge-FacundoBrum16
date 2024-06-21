@@ -13,7 +13,7 @@ The challenge is to create a Vue component that can generate a risk & reward gra
 ### Features/Overview:
 
 - Add multiple financial options to the same graph
-- Max profit, max loss.
+- Max profit, max loss
 - check profit/loss according to underlying active price in a range
 
 #### Web page: https://partyfinder.me/
