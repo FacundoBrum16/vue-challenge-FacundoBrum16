@@ -13,7 +13,7 @@ The challenge is to create a Vue component that can generate a risk & reward gra
 ### Features/Overview:
 
 - Add multiple financial options to the same graph
-- Max profit, max loss
+- Max profit, max loss, visualization of break even points (low precision)
 - check profit/loss according to underlying active price in a range
 
 #### Web page: https://66757f763bf94c827d4ac9d0--boisterous-brioche-d68027.netlify.app/
