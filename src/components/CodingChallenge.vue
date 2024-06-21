@@ -5,33 +5,41 @@
         class="w-full h-[35rem] rounded-xl p-2 xl:p-5 border-[1px] border-custom-white"
       >
         <line-chart
+          class="w-full"
           :options="chartOptions"
           v-if="chartData"
           :data="chartData"
         ></line-chart>
       </div>
       <div
-        class="bg-card text-white w-full mt-5 p-2 gap-y-1 rounded-md flex flex-col justify-start"
+        class="bg-card text-white w-full mt-5 p-2 rounded-md flex flex-col justify-start"
       >
-        <span class="text-sm">Price Range</span>
-        <div class="flex gap-x-2 items-center">
-          <AppInput
-            v-model="minPrice"
-            :formatter="(value) => formatCurrency(value)"
-            backgroundColorClass="bg-background"
-            inputClasses="px-2 py-1"
-            textSize="small"
-            @input="generateGraph()"
-          />
-          <span>-</span>
-          <AppInput
-            v-model="maxPrice"
-            :formatter="(value) => formatCurrency(value)"
-            backgroundColorClass="bg-background"
-            inputClasses="px-2 py-1"
-            textSize="small"
-            @input="generateGraph()"
-          />
+        <div class="flex justify-center w-fit flex-col gap-y-1 w-.">
+          <div class="flex items-center justify-between overflow-x-hidden">
+            <span class="text-sm">Price Range</span>
+            <ErrorLabel :errorText="priceRangeValidation"></ErrorLabel>
+          </div>
+          <div class="flex gap-x-2 items-center">
+            <AppInput
+              v-model="minPrice"
+              placeholder="Min price"
+              :formatter="(value) => formatCurrency(value)"
+              backgroundColorClass="bg-background"
+              inputClasses="px-2 py-1"
+              textSize="small"
+              @input="generateGraph()"
+            />
+            <span>-</span>
+            <AppInput
+              v-model="maxPrice"
+              placeholder="Max price"
+              :formatter="(value) => formatCurrency(value)"
+              backgroundColorClass="bg-background"
+              inputClasses="px-2 py-1"
+              textSize="small"
+              @input="generateGraph()"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -65,6 +73,7 @@ import OptionInput from '@/components/OptionInput.vue';
 import IconPlus from '@/components/icons/IconPlus.vue';
 import AppInput from '@/components/shared/inputs/AppInput.vue';
 import { generateNumbersBetween, formatPrice, sumArray } from '@/common/utils';
+import ErrorLabel from '@/components/shared/errorLabel/ErrorLabel.vue';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -94,6 +103,7 @@ export default {
     OptionInput,
     IconPlus,
     AppInput,
+    ErrorLabel,
   },
   name: 'CodingChallenge',
   props: {
@@ -150,6 +160,14 @@ export default {
       const minPrice = parseFloat(this.minPrice.replace('$', ''));
       const maxPrice = parseFloat(this.maxPrice.replace('$', ''));
       return generateNumbersBetween(minPrice, maxPrice);
+    },
+    priceRangeValidation() {
+      const minPrice = parseFloat(this.minPrice.replace('$', ''));
+      const maxPrice = parseFloat(this.maxPrice.replace('$', ''));
+
+      if (minPrice >= maxPrice) return 'The range is invalid';
+
+      return '';
     },
   },
   watch: {

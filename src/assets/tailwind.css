@@ -5,7 +5,7 @@
   html,
   body,
   #app {
-    @apply h-full bg-background overflow-x-hidden;
+    @apply h-full w-full bg-background;
   }
 }
 
