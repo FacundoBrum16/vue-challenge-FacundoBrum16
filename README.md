@@ -16,8 +16,6 @@ The challenge is to create a Vue component that can generate a risk & reward gra
 - Max profit, max loss
 - check profit/loss according to underlying active price in a range
 
-#### Web page: https://partyfinder.me/
-
 #### Web page: https://66757f763bf94c827d4ac9d0--boisterous-brioche-d68027.netlify.app/
 
 
