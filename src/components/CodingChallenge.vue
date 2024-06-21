@@ -86,6 +86,7 @@ import {
 } from 'chart.js';
 import { Line } from 'vue-chartjs';
 import annotationPlugin from 'chartjs-plugin-annotation';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -237,10 +238,13 @@ export default {
       return largestIndex;
     },
 
+    /**
+     * Generates the graph data and configuration for displaying profit and loss information.
+     * It calculates the profit/loss data, formats it for the chart, and adds annotations
+     * for maximum profit, maximum loss, and break-even points on the graph.
+     */
     generateGraph() {
       const profitLossData = this.calculateProfitLoss();
-
-      console.log(profitLossData);
 
       this.chartData = {
         labels: this.formatCurrencyArray(this.graphLabels),
@@ -301,8 +305,16 @@ export default {
       };
     },
 
+    /**
+     * Calculates the profit or loss for a given option at a specific stock price.
+     * It takes into account the option's strike price, type (call or put), premium,
+     * position (long or short), and the quantity of contracts.
+     *
+     * @param {number} price - The current price of the underlying asset.
+     * @param {Object} option - The option details including strike price, type, premium, long/short position, and contract quantity.
+     * @returns {number} - The calculated profit or loss, rounded to two decimal places.
+     */
     calculateForPrice(price, option) {
-      //calculate option profit/loss for specific action price
       const { strike_price, type, premium, long_short, contracts_quantity } =
         option;
       const contractSize = 100;
@@ -340,9 +352,16 @@ export default {
       }
       return parseFloat(profitLoss.toFixed(2));
     },
-    calculateProfitLoss() {
-      // calculate the profit/loss for all open operations, adding the profits or losses of the operations for each price
 
+    /**
+     * Calculates the total profit or loss for all open options at each price point.
+     * It iterates over each price in the graphLabels array and calculates the profit
+     * or loss for each option at that price using the calculateForPrice function.
+     * The profits or losses are then summed for each price.
+     *
+     * @returns {number[]} - An array of profit or loss values for each price point.
+     */
+    calculateProfitLoss() {
       const profitLossArr = this.graphLabels.map((price) => {
         const profitLossByPrice = this.optionsData.map((option) => {
           return this.calculateForPrice(price, option);
